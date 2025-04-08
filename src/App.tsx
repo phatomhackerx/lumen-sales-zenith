@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppLayout } from "@/components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
+import Produtos from "./pages/Produtos";
 import PaginaPlaceholder from "./pages/PaginaPlaceholder";
 import NotFound from "./pages/NotFound";
 
@@ -30,7 +31,7 @@ const App = () => (
             path="/produtos"
             element={
               <AppLayout>
-                <PaginaPlaceholder titulo="Produtos" />
+                <Produtos />
               </AppLayout>
             }
           />
