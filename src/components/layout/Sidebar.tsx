@@ -57,7 +57,7 @@ export function Sidebar({ open, setOpen }: SidebarProps) {
       )}
     >
       <div className="h-16 flex items-center justify-between px-6 border-b border-sidebar-border">
-        <span className="text-xl font-bold">NexusSales</span>
+        <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">NexusSales</span>
         <button
           onClick={() => setOpen(false)}
           className="p-2 rounded-md hover:bg-sidebar-accent lg:hidden"
@@ -88,8 +88,8 @@ export function Sidebar({ open, setOpen }: SidebarProps) {
                   cn(
                     "flex items-center justify-between px-3 py-2.5 rounded-md transition-colors",
                     isActive
-                      ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent"
+                      ? "bg-primary/10 text-primary font-medium border-l-2 border-primary"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-primary"
                   )
                 }
               >
@@ -98,7 +98,7 @@ export function Sidebar({ open, setOpen }: SidebarProps) {
                   <span>{item.title}</span>
                 </div>
                 {item.badge && (
-                  <span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded-full font-medium">
+                  <span className="bg-emerald-500/20 text-emerald-500 text-xs px-1.5 py-0.5 rounded-full font-medium">
                     {item.badge}
                   </span>
                 )}
