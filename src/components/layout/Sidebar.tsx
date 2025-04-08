@@ -12,7 +12,8 @@ import {
   Link, 
   Tag, 
   HelpCircle,
-  ShoppingBag
+  ShoppingBag,
+  Store
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,7 @@ interface NavItem {
   title: string;
   href: string;
   icon: React.ElementType;
+  badge?: string;
 }
 
 interface SidebarProps {
@@ -30,7 +32,12 @@ interface SidebarProps {
 const navItems: NavItem[] = [
   { title: "Dashboard", href: "/", icon: BarChart3 },
   { title: "Produtos", href: "/produtos", icon: Package },
-  { title: "Marketplace", href: "/marketplace", icon: ShoppingBag },
+  { 
+    title: "Marketplace", 
+    href: "/marketplace", 
+    icon: Store, 
+    badge: "New" 
+  },
   { title: "Minhas Vendas", href: "/vendas", icon: ShoppingCart },
   { title: "Assinaturas", href: "/assinaturas", icon: Repeat },
   { title: "Relatórios", href: "/relatorios", icon: FileText },
@@ -72,22 +79,29 @@ export function Sidebar({ open, setOpen }: SidebarProps) {
         </button>
       </div>
       <nav className="p-4">
-        <ul className="space-y-2">
+        <ul className="space-y-1.5">
           {navItems.map((item) => (
             <li key={item.href}>
               <NavLink
                 to={item.href}
                 className={({ isActive }) =>
                   cn(
-                    "flex items-center space-x-3 px-3 py-2 rounded-md transition-colors",
+                    "flex items-center justify-between px-3 py-2.5 rounded-md transition-colors",
                     isActive
-                      ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                      ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium"
                       : "text-sidebar-foreground hover:bg-sidebar-accent"
                   )
                 }
               >
-                <item.icon className="h-5 w-5" />
-                <span>{item.title}</span>
+                <div className="flex items-center gap-3">
+                  <item.icon className="h-5 w-5" />
+                  <span>{item.title}</span>
+                </div>
+                {item.badge && (
+                  <span className="bg-primary/20 text-primary text-xs px-1.5 py-0.5 rounded-full font-medium">
+                    {item.badge}
+                  </span>
+                )}
               </NavLink>
             </li>
           ))}

@@ -1,7 +1,19 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Search, Filter, Star, ShoppingCart, Percent, TrendingUp } from "lucide-react";
+import { 
+  Search, 
+  Filter, 
+  Star, 
+  ShoppingCart, 
+  Percent, 
+  TrendingUp, 
+  ArrowUpRight,
+  Tag,
+  ChevronDown,
+  SlidersHorizontal,
+  CheckCircle2
+} from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,6 +21,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ProdutoMarketplace {
   id: string;
@@ -132,7 +146,8 @@ const categorias = [
 const Marketplace = () => {
   const [busca, setBusca] = useState("");
   const [categoriaAtual, setCategoriaAtual] = useState("Todas");
-  const [produtos, setProdutos] = useState(produtosExemplo);
+  const [produtos] = useState(produtosExemplo);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Filtra produtos baseado na busca e categoria
   const produtosFiltrados = produtos.filter(produto => {
@@ -142,51 +157,126 @@ const Marketplace = () => {
     return matchBusca && matchCategoria;
   });
   
+  // Produtos em destaque
+  const produtosDestaque = produtos.filter(p => p.emDestaque).slice(0, 3);
+  
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold mb-2">Marketplace</h1>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold tracking-tight">Marketplace</h1>
         <p className="text-muted-foreground">
-          Descubra os melhores produtos para comprar ou promover como afiliado
+          Encontre os melhores produtos digitais para comprar ou promover como afiliado
         </p>
       </div>
       
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div className="relative w-full md:w-1/3">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Buscar produtos..."
-            className="pl-9"
-            value={busca}
-            onChange={(e) => setBusca(e.target.value)}
-          />
+      {/* Featured Products Section */}
+      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-6 mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold flex items-center">
+            <CheckCircle2 className="mr-2 h-5 w-5 text-primary" />
+            Produtos em Destaque
+          </h2>
+          <Button variant="link" className="font-medium" asChild>
+            <Link to="#" className="flex items-center">
+              Ver todos
+              <ArrowUpRight className="ml-1 h-4 w-4" />
+            </Link>
+          </Button>
         </div>
         
-        <div className="flex gap-2 overflow-x-auto scrollbar-none">
-          {categorias.map((cat) => (
-            <Button
-              key={cat}
-              variant={categoriaAtual === cat ? "default" : "outline"}
-              size="sm"
-              onClick={() => setCategoriaAtual(cat)}
-              className="whitespace-nowrap"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {produtosDestaque.map((produto) => (
+            <Link 
+              key={produto.id} 
+              to={`/marketplace/${produto.id}`}
+              className="group relative overflow-hidden rounded-lg bg-card shadow-sm transition-all hover:shadow-md"
             >
-              {cat}
-            </Button>
+              <div className="aspect-[16/9] relative overflow-hidden">
+                <img 
+                  src={produto.imagem} 
+                  alt={produto.nome} 
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <h3 className="text-lg font-semibold text-white mb-1 line-clamp-1">{produto.nome}</h3>
+                  <div className="flex justify-between items-center">
+                    <span className="text-white text-sm flex items-center">
+                      <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400 mr-1" />
+                      {produto.avaliacao}
+                    </span>
+                    <span className="font-bold text-white">
+                      R$ {produto.preco.toLocaleString('pt-BR')}
+                    </span>
+                  </div>
+                </div>
+                {produto.maisVendido && (
+                  <Badge variant="secondary" className="absolute top-2 left-2 bg-amber-500 text-white">
+                    <TrendingUp className="mr-1 h-3 w-3" /> Mais Vendido
+                  </Badge>
+                )}
+              </div>
+            </Link>
           ))}
         </div>
       </div>
       
-      <Tabs defaultValue="todos">
-        <TabsList className="mb-4">
+      {/* Search and Filters */}
+      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm py-4 border-b">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-2 w-full md:w-auto">
+            <div className="relative flex-1 md:w-80">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Buscar produtos..."
+                className="pl-10 w-full"
+                value={busca}
+                onChange={(e) => setBusca(e.target.value)}
+              />
+            </div>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="md:hidden"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <div className={`${showFilters ? 'flex' : 'hidden'} md:flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none`}>
+            {categorias.map((cat) => (
+              <Button
+                key={cat}
+                variant={categoriaAtual === cat ? "default" : "outline"}
+                size="sm"
+                onClick={() => setCategoriaAtual(cat)}
+                className="whitespace-nowrap"
+              >
+                {cat}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      <Tabs defaultValue="todos" className="mt-8">
+        <TabsList className="mb-4 w-full md:w-auto flex overflow-x-auto scrollbar-none">
           <TabsTrigger value="todos">Todos os Produtos</TabsTrigger>
-          <TabsTrigger value="destaque">Em Destaque</TabsTrigger>
-          <TabsTrigger value="maisVendidos">Mais Vendidos</TabsTrigger>
-          <TabsTrigger value="melhoresComissoes">Melhores Comissões</TabsTrigger>
+          <TabsTrigger value="destaque" className="flex items-center">
+            <CheckCircle2 className="mr-1 h-4 w-4" /> Em Destaque
+          </TabsTrigger>
+          <TabsTrigger value="maisVendidos" className="flex items-center">
+            <TrendingUp className="mr-1 h-4 w-4" /> Mais Vendidos
+          </TabsTrigger>
+          <TabsTrigger value="melhoresComissoes" className="flex items-center">
+            <Percent className="mr-1 h-4 w-4" /> Melhores Comissões
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="todos" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {produtosFiltrados.map((produto) => (
               <ProdutoCard key={produto.id} produto={produto} />
             ))}
@@ -221,19 +311,19 @@ const Marketplace = () => {
   );
 };
 
-// Componente de Card de Produto
+// Componente de Card de Produto Refinado
 const ProdutoCard = ({ produto }: { produto: ProdutoMarketplace }) => {
   return (
-    <Card className="overflow-hidden flex flex-col h-full">
+    <Card className="overflow-hidden flex flex-col h-full group hover:shadow-md transition-all border-border/60">
       <Link to={`/marketplace/${produto.id}`} className="group">
-        <div className="relative h-40 overflow-hidden">
+        <div className="relative h-48 overflow-hidden">
           <img 
             src={produto.imagem} 
             alt={produto.nome} 
-            className="w-full h-full object-cover transition-transform group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
           {produto.precoOriginal && (
-            <Badge variant="secondary" className="absolute top-2 right-2 bg-red-500 text-white">
+            <Badge variant="secondary" className="absolute top-2 right-2 bg-red-500 text-white font-medium">
               {Math.round((1 - produto.preco / produto.precoOriginal) * 100)}% OFF
             </Badge>
           )}
@@ -247,8 +337,41 @@ const ProdutoCard = ({ produto }: { produto: ProdutoMarketplace }) => {
         <CardHeader className="pb-2">
           <div className="flex justify-between items-start">
             <div>
-              <CardTitle className="text-lg line-clamp-1">{produto.nome}</CardTitle>
-              <CardDescription className="line-clamp-1">Por {produto.vendedor}</CardDescription>
+              <CardTitle className="text-lg line-clamp-1 group-hover:text-primary transition-colors">{produto.nome}</CardTitle>
+              
+              <HoverCard>
+                <HoverCardTrigger>
+                  <CardDescription className="line-clamp-1 flex items-center">
+                    <span className="mr-1">Por</span>
+                    <Avatar className="h-4 w-4 mr-1">
+                      <AvatarFallback>{produto.vendedor.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    {produto.vendedor}
+                  </CardDescription>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80">
+                  <div className="flex justify-between space-x-4">
+                    <Avatar>
+                      <AvatarFallback>{produto.vendedor.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                      <h4 className="text-sm font-semibold">{produto.vendedor}</h4>
+                      <div className="flex items-center pt-2">
+                        <Star className="h-4 w-4 text-amber-500 fill-amber-500 mr-1" />
+                        <span className="text-xs text-muted-foreground">
+                          {produto.avaliacao} classificação média
+                        </span>
+                      </div>
+                      <div className="flex items-center">
+                        <Tag className="h-3 w-3 text-muted-foreground mr-1" />
+                        <span className="text-xs text-muted-foreground">
+                          {Math.floor(Math.random() * 15) + 5} produtos no catálogo
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             </div>
             <div className="flex items-center space-x-1 text-amber-500">
               <Star className="h-4 w-4 fill-current" />
@@ -259,15 +382,17 @@ const ProdutoCard = ({ produto }: { produto: ProdutoMarketplace }) => {
       </Link>
       
       <CardContent className="pb-2 flex-grow">
-        <Badge variant="outline" className="mr-2">
-          {produto.categoria}
-        </Badge>
-        <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-          {produto.vendas}+ vendas
-        </Badge>
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="outline" className="bg-primary/5 hover:bg-primary/10">
+            {produto.categoria}
+          </Badge>
+          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+            {produto.vendas}+ vendas
+          </Badge>
+        </div>
       </CardContent>
       
-      <Separator />
+      <Separator className="mx-6" />
       
       <CardFooter className="flex justify-between items-center pt-4">
         <div>
@@ -286,7 +411,12 @@ const ProdutoCard = ({ produto }: { produto: ProdutoMarketplace }) => {
             <Percent className="h-4 w-4 mr-1" />
             <span className="text-sm font-semibold">{produto.comissao}% comissão</span>
           </div>
-          <Button variant="default" size="sm" className="whitespace-nowrap" asChild>
+          <Button 
+            variant="default" 
+            size="sm" 
+            className="whitespace-nowrap transition-all hover:translate-y-[-2px]" 
+            asChild
+          >
             <Link to={`/marketplace/${produto.id}`}>
               <ShoppingCart className="h-4 w-4 mr-2" />
               Comprar
