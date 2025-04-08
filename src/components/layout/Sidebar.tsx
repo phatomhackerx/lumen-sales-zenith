@@ -11,7 +11,8 @@ import {
   Wallet, 
   Link, 
   Tag, 
-  HelpCircle
+  HelpCircle,
+  ShoppingBag
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -29,6 +30,7 @@ interface SidebarProps {
 const navItems: NavItem[] = [
   { title: "Dashboard", href: "/", icon: BarChart3 },
   { title: "Produtos", href: "/produtos", icon: Package },
+  { title: "Marketplace", href: "/marketplace", icon: ShoppingBag },
   { title: "Minhas Vendas", href: "/vendas", icon: ShoppingCart },
   { title: "Assinaturas", href: "/assinaturas", icon: Repeat },
   { title: "Relatórios", href: "/relatorios", icon: FileText },

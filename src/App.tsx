@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppLayout } from "@/components/layout/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import Produtos from "./pages/Produtos";
+import Marketplace from "./pages/Marketplace";
+import ProdutoDetalhe from "./pages/ProdutoDetalhe";
 import PaginaPlaceholder from "./pages/PaginaPlaceholder";
 import NotFound from "./pages/NotFound";
 
@@ -32,6 +34,22 @@ const App = () => (
             element={
               <AppLayout>
                 <Produtos />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/marketplace"
+            element={
+              <AppLayout>
+                <Marketplace />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/marketplace/:id"
+            element={
+              <AppLayout>
+                <ProdutoDetalhe />
               </AppLayout>
             }
           />
