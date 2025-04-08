@@ -73,7 +73,7 @@ export function SalesChart() {
               <YAxis
                 stroke="#888"
                 tickFormatter={(value) =>
-                  `R$${new Intl.NumberFormat("pt-BR").format(value)}`
+                  `R$${new Intl.NumberFormat("pt-BR").format(Number(value))}`
                 }
               />
               <Tooltip
@@ -83,7 +83,7 @@ export function SalesChart() {
                   color: 'hsl(var(--foreground))'
                 }}
                 formatter={(value) =>
-                  [`R$ ${new Intl.NumberFormat("pt-BR").format(value)}`, ""]
+                  [`R$ ${new Intl.NumberFormat("pt-BR").format(Number(value))}`, ""]
                 }
               />
               <Legend />

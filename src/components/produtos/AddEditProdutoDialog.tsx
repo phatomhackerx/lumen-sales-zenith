@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { FileImage, FileVideo, PackageCheck, Package2, Plus, X, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -89,7 +88,6 @@ export const AddEditProdutoDialog = ({
     },
   });
 
-  // Atualizar o formulário quando o produto mudar
   useEffect(() => {
     if (produto) {
       form.reset({
@@ -122,11 +120,20 @@ export const AddEditProdutoDialog = ({
   }, [produto, form]);
 
   const onSubmit = (data: ProdutoForm) => {
-    // Se não for informado, manter o ID existente ou criar um novo
     const produtoCompleto: Produto = {
-      ...data,
       id: produto?.id || Date.now().toString(),
+      nome: data.nome,
+      tipo: data.tipo,
+      preco: data.preco,
+      promocao: data.promocao,
+      estoque: data.estoque,
+      descricao: data.descricao,
+      categorias: data.categorias,
+      tags: data.tags,
+      imagens: data.imagens,
+      videos: data.videos,
       dataAdicionado: produto?.dataAdicionado || new Date(),
+      status: data.status,
     };
     
     onSave(produtoCompleto);
@@ -224,7 +231,6 @@ export const AddEditProdutoDialog = ({
                 <TabsTrigger value="precificacao">Precificação</TabsTrigger>
               </TabsList>
 
-              {/* Aba de Informações */}
               <TabsContent value="informacoes" className="space-y-4 pt-4">
                 <FormField
                   control={form.control}
@@ -319,7 +325,6 @@ export const AddEditProdutoDialog = ({
                 />
               </TabsContent>
 
-              {/* Aba de Categorias e Tags */}
               <TabsContent value="categorias" className="space-y-4 pt-4">
                 <div className="space-y-4">
                   <div>
@@ -402,7 +407,6 @@ export const AddEditProdutoDialog = ({
                 </div>
               </TabsContent>
 
-              {/* Aba de Imagens e Vídeos */}
               <TabsContent value="midia" className="space-y-4 pt-4">
                 <div>
                   <div className="flex items-center justify-between mb-2">
@@ -478,7 +482,6 @@ export const AddEditProdutoDialog = ({
                 </div>
               </TabsContent>
 
-              {/* Aba de Precificação */}
               <TabsContent value="precificacao" className="space-y-4 pt-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
