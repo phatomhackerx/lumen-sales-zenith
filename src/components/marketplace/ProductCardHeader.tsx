@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Star } from "lucide-react";
+import { Star, Tag } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
