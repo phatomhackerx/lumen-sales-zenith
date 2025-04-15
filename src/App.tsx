@@ -11,6 +11,7 @@ import ProdutoDetalhe from "./pages/ProdutoDetalhe";
 import PaginaPlaceholder from "./pages/PaginaPlaceholder";
 import NotFound from "./pages/NotFound";
 import Vendas from "./pages/Vendas";
+import Afiliados from "./pages/Afiliados";
 
 const queryClient = new QueryClient();
 
@@ -81,7 +82,7 @@ const App = () => (
             path="/afiliados"
             element={
               <AppLayout>
-                <PaginaPlaceholder titulo="Afiliados" />
+                <Afiliados />
               </AppLayout>
             }
           />
