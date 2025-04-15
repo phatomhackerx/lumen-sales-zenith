@@ -1,4 +1,3 @@
-
 export interface ProdutoMarketplace {
   id: string;
   nome: string;
@@ -15,4 +14,16 @@ export interface ProdutoMarketplace {
   maisVendido: boolean;
   nivelDificuldade?: 'iniciante' | 'intermediario' | 'avancado';
   tempoEntrega?: string;
+}
+
+export interface ProductCardHeaderProps {
+  produto: ProdutoMarketplace;
+}
+
+export interface ProductCardContentProps {
+  produto: ProdutoMarketplace;
+}
+
+export interface ProductCardFooterProps {
+  produto: ProdutoMarketplace;
 }
