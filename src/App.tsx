@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +10,7 @@ import Marketplace from "./pages/Marketplace";
 import ProdutoDetalhe from "./pages/ProdutoDetalhe";
 import PaginaPlaceholder from "./pages/PaginaPlaceholder";
 import NotFound from "./pages/NotFound";
+import Vendas from "./pages/Vendas";
 
 const queryClient = new QueryClient();
 
@@ -57,7 +57,7 @@ const App = () => (
             path="/vendas"
             element={
               <AppLayout>
-                <PaginaPlaceholder titulo="Minhas Vendas" />
+                <Vendas />
               </AppLayout>
             }
           />
