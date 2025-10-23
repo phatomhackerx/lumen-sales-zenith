@@ -16,28 +16,28 @@ const Dashboard = () => {
           title="Vendas Totais"
           value="R$ 45.875,00"
           description="+12% em relação ao mês anterior"
-          icon={DollarSign}
+          icon={<DollarSign className="h-5 w-5" />}
           trend="up"
         />
         <StatCard 
           title="Pedidos"
           value="386"
           description="+8% em relação ao mês anterior"
-          icon={Activity}
+          icon={<Activity className="h-5 w-5" />}
           trend="up"
         />
         <StatCard 
           title="Conversão"
           value="3.2%"
           description="+0.8% em relação ao mês anterior"
-          icon={TrendingUp}
+          icon={<TrendingUp className="h-5 w-5" />}
           trend="up"
         />
         <StatCard 
           title="Clientes"
           value="1,438"
           description="+18% em relação ao mês anterior"
-          icon={Users}
+          icon={<Users className="h-5 w-5" />}
           trend="up"
         />
       </div>
