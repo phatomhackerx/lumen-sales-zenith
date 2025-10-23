@@ -12,14 +12,14 @@ const Afiliados = () => {
       <AfiliadosHeader />
       <AfiliadosStats />
       
-      <Card>
+      <Card className="overflow-hidden">
         <Tabs defaultValue="todos" className="p-6">
-          <TabsList>
-            <TabsTrigger value="todos">Todos os Afiliados</TabsTrigger>
+          <TabsList className="grid grid-cols-3 w-full sm:w-auto">
+            <TabsTrigger value="todos">Todos</TabsTrigger>
             <TabsTrigger value="ativos">Ativos</TabsTrigger>
             <TabsTrigger value="inativos">Inativos</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="todos" className="mt-6">
             <AfiliadosList status="todos" />
           </TabsContent>

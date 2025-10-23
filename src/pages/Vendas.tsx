@@ -12,15 +12,15 @@ const Vendas = () => {
       <VendasHeader />
       <VendasStats />
       
-      <Card>
+      <Card className="overflow-hidden">
         <Tabs defaultValue="todas" className="p-6">
-          <TabsList>
-            <TabsTrigger value="todas">Todas as Vendas</TabsTrigger>
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 w-full sm:w-auto">
+            <TabsTrigger value="todas">Todas</TabsTrigger>
             <TabsTrigger value="aprovadas">Aprovadas</TabsTrigger>
             <TabsTrigger value="pendentes">Pendentes</TabsTrigger>
             <TabsTrigger value="canceladas">Canceladas</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="todas" className="mt-6">
             <VendasList status="todas" />
           </TabsContent>
