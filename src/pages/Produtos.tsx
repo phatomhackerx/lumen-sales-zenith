@@ -162,19 +162,19 @@ const Produtos = () => {
         </Button>
       </div>
 
-      <Card className="overflow-hidden">
+      <Card>
         <CardContent className="p-6">
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
-            <div className="relative w-full">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+            <div className="relative w-full sm:max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Buscar produtos, categorias ou tags..."
-                className="pl-11 w-full"
+                className="pl-10 w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <Button variant="outline" size="icon" title="Filtros avançados" className="shrink-0">
+            <Button variant="outline" size="icon" title="Filtros avançados">
               <Filter className="h-4 w-4" />
             </Button>
           </div>
