@@ -16,8 +16,8 @@ export const DashboardHeader = () => {
 
       <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
         <div className="relative w-full sm:w-[300px]">
-          <Input placeholder="Buscar..." className="pl-10" />
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
+          <Input placeholder="Buscar..." className="pl-11" />
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="icon">

@@ -52,7 +52,7 @@ export function Sidebar({ open, setOpen }: SidebarProps) {
   return (
     <div
       className={cn(
-        "bg-sidebar h-screen fixed left-0 top-0 z-40 transition-all duration-300 ease-in-out border-r border-sidebar-border",
+        "bg-sidebar/95 backdrop-blur-xl h-screen fixed left-0 top-0 z-40 transition-all duration-300 ease-in-out border-r border-sidebar-border/50",
         open ? "w-64" : "w-0 -translate-x-full"
       )}
     >
@@ -86,10 +86,10 @@ export function Sidebar({ open, setOpen }: SidebarProps) {
                 to={item.href}
                 className={({ isActive }) =>
                   cn(
-                    "flex items-center justify-between px-3 py-2.5 rounded-md transition-colors",
+                    "flex items-center justify-between px-4 py-3 rounded-xl transition-all",
                     isActive
-                      ? "bg-primary/10 text-primary font-medium border-l-2 border-primary"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-primary"
+                      ? "bg-primary text-primary-foreground shadow-lg"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-foreground"
                   )
                 }
               >

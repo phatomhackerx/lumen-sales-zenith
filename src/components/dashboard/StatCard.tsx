@@ -21,13 +21,13 @@ export function StatCard({
   className,
 }: StatCardProps) {
   return (
-    <div className={cn("dashboard-card", className)}>
-      <div className="flex justify-between items-start mb-2">
-        <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
-        {icon && <div className="text-muted-foreground">{icon}</div>}
+    <div className={cn("dashboard-card hover:scale-105", className)}>
+      <div className="flex justify-between items-start mb-3">
+        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{title}</h3>
+        {icon && <div className="text-foreground/70 p-2 rounded-lg bg-muted/30">{icon}</div>}
       </div>
       <div className="mt-2">
-        <div className="text-2xl font-bold">{value}</div>
+        <div className="text-3xl font-bold tracking-tight">{value}</div>
         {description && (
           <p className="text-xs text-muted-foreground mt-1">{description}</p>
         )}
