@@ -8,10 +8,12 @@ import Dashboard from "./pages/Dashboard";
 import Produtos from "./pages/Produtos";
 import Marketplace from "./pages/Marketplace";
 import ProdutoDetalhe from "./pages/ProdutoDetalhe";
-import PaginaPlaceholder from "./pages/PaginaPlaceholder";
-import NotFound from "./pages/NotFound";
 import Vendas from "./pages/Vendas";
 import Afiliados from "./pages/Afiliados";
+import Configuracoes from "./pages/Configuracoes";
+import Relatorios from "./pages/Relatorios";
+import PaginaPlaceholder from "./pages/PaginaPlaceholder";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -74,7 +76,7 @@ const App = () => (
             path="/relatorios"
             element={
               <AppLayout>
-                <PaginaPlaceholder titulo="Relatórios" />
+                <Relatorios />
               </AppLayout>
             }
           />
@@ -83,6 +85,14 @@ const App = () => (
             element={
               <AppLayout>
                 <Afiliados />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/configuracoes"
+            element={
+              <AppLayout>
+                <Configuracoes />
               </AppLayout>
             }
           />

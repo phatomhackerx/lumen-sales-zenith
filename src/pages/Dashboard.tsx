@@ -3,6 +3,8 @@ import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { SalesChart } from "@/components/dashboard/SalesChart";
 import { PaymentMethodsChart } from "@/components/dashboard/PaymentMethodsChart";
+import { RecentOrders } from "@/components/dashboard/RecentOrders";
+import { TopProducts } from "@/components/dashboard/TopProducts";
 import { Activity, TrendingUp, Users, DollarSign } from "lucide-react";
 
 const Dashboard = () => {
@@ -42,15 +44,16 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-        <div className="lg:col-span-2 dashboard-card">
-          <h3 className="text-lg font-semibold mb-4">Vendas</h3>
+        <div className="lg:col-span-2">
           <SalesChart />
         </div>
         
-        <div className="dashboard-card">
-          <h3 className="text-lg font-semibold mb-4">Formas de Pagamento</h3>
-          <PaymentMethodsChart />
-        </div>
+        <PaymentMethodsChart />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+        <RecentOrders />
+        <TopProducts />
       </div>
     </div>
   );
