@@ -13,9 +13,9 @@ const Afiliados = () => {
       <AfiliadosStats />
       
       <Card>
-        <Tabs defaultValue="todos" className="p-6">
-          <TabsList>
-            <TabsTrigger value="todos">Todos os Afiliados</TabsTrigger>
+        <Tabs defaultValue="todos" className="p-4 sm:p-6">
+          <TabsList className="w-full justify-start overflow-x-auto flex-nowrap">
+            <TabsTrigger value="todos">Todos</TabsTrigger>
             <TabsTrigger value="ativos">Ativos</TabsTrigger>
             <TabsTrigger value="inativos">Inativos</TabsTrigger>
           </TabsList>

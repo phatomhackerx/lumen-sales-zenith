@@ -13,9 +13,9 @@ const Vendas = () => {
       <VendasStats />
       
       <Card>
-        <Tabs defaultValue="todas" className="p-6">
-          <TabsList>
-            <TabsTrigger value="todas">Todas as Vendas</TabsTrigger>
+        <Tabs defaultValue="todas" className="p-4 sm:p-6">
+          <TabsList className="w-full justify-start overflow-x-auto flex-nowrap">
+            <TabsTrigger value="todas">Todas</TabsTrigger>
             <TabsTrigger value="aprovadas">Aprovadas</TabsTrigger>
             <TabsTrigger value="pendentes">Pendentes</TabsTrigger>
             <TabsTrigger value="canceladas">Canceladas</TabsTrigger>

@@ -13,9 +13,16 @@ import {
   Tag, 
   HelpCircle,
   ShoppingBag,
-  Store
+  Store,
+  X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface NavItem {
   title: string;
@@ -50,63 +57,111 @@ const navItems: NavItem[] = [
 
 export function Sidebar({ open, setOpen }: SidebarProps) {
   return (
-    <div
-      className={cn(
-        "bg-sidebar/95 backdrop-blur-xl h-screen fixed left-0 top-0 z-40 transition-all duration-300 ease-in-out border-r border-sidebar-border/50",
-        open ? "w-64" : "w-0 -translate-x-full"
-      )}
-    >
-      <div className="h-16 flex items-center justify-between px-6 border-b border-sidebar-border">
-        <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">NexusSales</span>
-        <button
+    <>
+      {/* Mobile overlay */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30 lg:hidden"
           onClick={() => setOpen(false)}
-          className="p-2 rounded-md hover:bg-sidebar-accent lg:hidden"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-      </div>
-      <nav className="p-4">
-        <ul className="space-y-1.5">
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <NavLink
-                to={item.href}
-                className={({ isActive }) =>
-                  cn(
-                    "flex items-center justify-between px-4 py-3 rounded-xl transition-all",
-                    isActive
-                      ? "bg-primary text-primary-foreground shadow-lg"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-foreground"
-                  )
-                }
+        />
+      )}
+
+      <aside
+        className={cn(
+          "bg-sidebar/95 backdrop-blur-xl h-screen fixed left-0 top-0 z-40 transition-all duration-300 ease-in-out border-r border-sidebar-border/50 flex flex-col",
+          open ? "w-64" : "w-0 lg:w-20"
+        )}
+      >
+        {/* Header */}
+        <div className={cn(
+          "h-16 flex items-center border-b border-sidebar-border/50 transition-all duration-300",
+          open ? "justify-between px-6" : "justify-center px-2"
+        )}>
+          {open ? (
+            <>
+              <span className="text-xl font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
+                NexusSales
+              </span>
+              <button
+                onClick={() => setOpen(false)}
+                className="p-2 rounded-lg hover:bg-sidebar-accent transition-colors lg:hidden"
+                aria-label="Fechar sidebar"
               >
-                <div className="flex items-center gap-3">
-                  <item.icon className="h-5 w-5" />
-                  <span>{item.title}</span>
-                </div>
-                {item.badge && (
-                  <span className="bg-emerald-500/20 text-emerald-500 text-xs px-1.5 py-0.5 rounded-full font-medium">
-                    {item.badge}
-                  </span>
-                )}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </div>
+                <X className="h-5 w-5" />
+              </button>
+            </>
+          ) : (
+            <span className="text-lg font-bold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent hidden lg:block">
+              NS
+            </span>
+          )}
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 overflow-y-auto p-4">
+          <TooltipProvider delayDuration={0}>
+            <ul className="space-y-1.5">
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  {open ? (
+                    <NavLink
+                      to={item.href}
+                      onClick={() => window.innerWidth < 1024 && setOpen(false)}
+                      className={({ isActive }) =>
+                        cn(
+                          "flex items-center justify-between px-4 py-3 rounded-xl transition-all group relative overflow-hidden",
+                          isActive
+                            ? "bg-primary text-primary-foreground shadow-lg"
+                            : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-foreground"
+                        )
+                      }
+                    >
+                      <div className="flex items-center gap-3">
+                        <item.icon className="h-5 w-5 flex-shrink-0" />
+                        <span className="text-sm font-medium">{item.title}</span>
+                      </div>
+                      {item.badge && (
+                        <span className="bg-emerald-500/20 text-emerald-500 text-xs px-2 py-0.5 rounded-full font-medium">
+                          {item.badge}
+                        </span>
+                      )}
+                    </NavLink>
+                  ) : (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <NavLink
+                          to={item.href}
+                          className={({ isActive }) =>
+                            cn(
+                              "hidden lg:flex items-center justify-center w-12 h-12 rounded-xl transition-all relative",
+                              isActive
+                                ? "bg-primary text-primary-foreground shadow-lg"
+                                : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-foreground"
+                            )
+                          }
+                        >
+                          <item.icon className="h-5 w-5" />
+                          {item.badge && (
+                            <span className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full" />
+                          )}
+                        </NavLink>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" className="flex items-center gap-2">
+                        {item.title}
+                        {item.badge && (
+                          <span className="bg-emerald-500/20 text-emerald-500 text-xs px-1.5 py-0.5 rounded-full">
+                            {item.badge}
+                          </span>
+                        )}
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </TooltipProvider>
+        </nav>
+      </aside>
+    </>
   );
 }

@@ -154,21 +154,24 @@ const Marketplace = () => {
       />
       
       <Tabs defaultValue="todos" className="mt-8">
-        <TabsList className="mb-4 w-full md:w-auto grid grid-cols-4 md:flex bg-muted/50 p-1 rounded-lg">
-          <TabsTrigger value="todos" className="rounded-md">Todos os Produtos</TabsTrigger>
-          <TabsTrigger value="destaque" className="flex items-center rounded-md">
-            <CheckCircle2 className="mr-1 h-4 w-4" /> Em Destaque
+        <TabsList className="mb-6 w-full justify-start overflow-x-auto flex-nowrap">
+          <TabsTrigger value="todos">Todos os Produtos</TabsTrigger>
+          <TabsTrigger value="destaque" className="flex items-center gap-2">
+            <CheckCircle2 className="h-4 w-4" />
+            <span className="hidden sm:inline">Em Destaque</span>
           </TabsTrigger>
-          <TabsTrigger value="maisVendidos" className="flex items-center rounded-md">
-            <TrendingUp className="mr-1 h-4 w-4" /> Mais Vendidos
+          <TabsTrigger value="maisVendidos" className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4" />
+            <span className="hidden sm:inline">Mais Vendidos</span>
           </TabsTrigger>
-          <TabsTrigger value="melhoresComissoes" className="flex items-center rounded-md">
-            <Percent className="mr-1 h-4 w-4" /> Melhores Comissões
+          <TabsTrigger value="melhoresComissoes" className="flex items-center gap-2">
+            <Percent className="h-4 w-4" />
+            <span className="hidden sm:inline">Melhores Comissões</span>
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="todos" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {produtosFiltrados.map((produto) => (
               <ProductCard key={produto.id} produto={produto} />
             ))}
@@ -176,7 +179,7 @@ const Marketplace = () => {
         </TabsContent>
         
         <TabsContent value="destaque" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {produtosFiltrados.filter(p => p.emDestaque).map((produto) => (
               <ProductCard key={produto.id} produto={produto} />
             ))}
@@ -184,7 +187,7 @@ const Marketplace = () => {
         </TabsContent>
         
         <TabsContent value="maisVendidos" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {produtosFiltrados.filter(p => p.maisVendido).map((produto) => (
               <ProductCard key={produto.id} produto={produto} />
             ))}
@@ -192,7 +195,7 @@ const Marketplace = () => {
         </TabsContent>
         
         <TabsContent value="melhoresComissoes" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {produtosFiltrados.filter(p => p.melhorComissao).map((produto) => (
               <ProductCard key={produto.id} produto={produto} />
             ))}

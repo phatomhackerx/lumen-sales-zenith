@@ -3,22 +3,21 @@ import React, { useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { StarfieldBackground } from "./StarfieldBackground";
+import { ScrollToTop } from "@/components/ui/scroll-to-top";
+import { Menu } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface AppLayoutProps {
   children: React.ReactNode;
 }
 
 export function AppLayout({ children }: AppLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  // On mobile, sidebar is closed by default
+  // On mobile/tablet, sidebar starts closed; on desktop, starts open
   React.useEffect(() => {
-    if (isMobile) {
-      setSidebarOpen(false);
-    } else {
-      setSidebarOpen(true);
-    }
+    setSidebarOpen(!isMobile);
   }, [isMobile]);
 
   const toggleSidebar = () => {
@@ -29,34 +28,32 @@ export function AppLayout({ children }: AppLayoutProps) {
     <div className="flex h-screen w-full bg-background overflow-hidden relative">
       <StarfieldBackground />
       <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
-      <div className="flex flex-col flex-1 w-full overflow-hidden relative z-10">
-        <header className="h-16 flex items-center px-6 border-b border-border/50 backdrop-blur-xl bg-background/50">
+      
+      <div className={cn(
+        "flex flex-col flex-1 w-full overflow-hidden relative z-10 transition-all duration-300",
+        sidebarOpen ? "lg:ml-64" : "lg:ml-20"
+      )}>
+        {/* Header */}
+        <header className="h-16 flex items-center px-4 sm:px-6 border-b border-border/50 backdrop-blur-xl bg-background/50 sticky top-0 z-20">
           <button
             onClick={toggleSidebar}
             className="p-2 rounded-lg hover:bg-secondary/80 transition-colors"
-            aria-label="Toggle sidebar"
+            aria-label="Alternar menu lateral"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+            <Menu className="h-5 w-5" />
           </button>
-          <h1 className="text-xl font-bold ml-4">Plataforma de Vendas</h1>
+          <h1 className="text-lg sm:text-xl font-bold ml-4 bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
+            Plataforma de Vendas
+          </h1>
         </header>
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6">
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           {children}
         </main>
       </div>
+
+      <ScrollToTop />
     </div>
   );
 }
