@@ -1,7 +1,18 @@
 
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { Package2, Plus, Search, Filter, Tag, Edit, Trash } from "lucide-react";
+import { 
+  Package2, 
+  Plus, 
+  Search, 
+  Filter, 
+  Tag, 
+  Edit, 
+  Trash,
+  Settings,
+  ShoppingCart,
+  Link as LinkIcon
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,6 +26,14 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { AddEditProdutoDialog } from "@/components/produtos/AddEditProdutoDialog";
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { CheckoutBuilder } from "@/components/produtos/CheckoutBuilder";
+import { ProdutoFerramentas } from "@/components/produtos/ProdutoFerramentas";
 
 // Tipos para os produtos
 export interface Produto {
@@ -98,6 +117,9 @@ const Produtos = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentProduto, setCurrentProduto] = useState<Produto | null>(null);
+  const [checkoutBuilderOpen, setCheckoutBuilderOpen] = useState(false);
+  const [ferramentasOpen, setFerramentasOpen] = useState(false);
+  const [selectedProdutoId, setSelectedProdutoId] = useState<string | null>(null);
 
   // Filtrar produtos pelo termo de busca
   const produtosFiltrados = produtos.filter(produto => 
@@ -150,6 +172,23 @@ const Produtos = () => {
 
   const formatarPreco = (preco: number) => {
     return preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  };
+
+  const handleOpenCheckoutBuilder = (produtoId: string) => {
+    setSelectedProdutoId(produtoId);
+    setCheckoutBuilderOpen(true);
+  };
+
+  const handleOpenFerramentas = (produtoId: string) => {
+    setSelectedProdutoId(produtoId);
+    setFerramentasOpen(true);
+  };
+
+  const handlePublicarMarketplace = (produtoId: string) => {
+    toast({
+      title: "Produto publicado!",
+      description: "Seu produto foi publicado no marketplace com sucesso.",
+    });
   };
 
   return (
@@ -270,7 +309,32 @@ const Produtos = () => {
                           <Button
                             variant="ghost"
                             size="icon"
+                            onClick={() => handleOpenFerramentas(produto.id)}
+                            title="Ferramentas"
+                          >
+                            <Settings className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleOpenCheckoutBuilder(produto.id)}
+                            title="Checkout Builder"
+                          >
+                            <ShoppingCart className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handlePublicarMarketplace(produto.id)}
+                            title="Publicar no Marketplace"
+                          >
+                            <LinkIcon className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => handleEditProduto(produto)}
+                            title="Editar"
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -278,6 +342,7 @@ const Produtos = () => {
                             variant="ghost"
                             size="icon"
                             onClick={() => handleDeleteProduto(produto.id)}
+                            title="Excluir"
                           >
                             <Trash className="h-4 w-4" />
                           </Button>
@@ -314,6 +379,31 @@ const Produtos = () => {
         produto={currentProduto}
         onSave={handleSaveProduto}
       />
+
+      <Dialog open={checkoutBuilderOpen} onOpenChange={setCheckoutBuilderOpen}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Checkout Builder</DialogTitle>
+          </DialogHeader>
+          {selectedProdutoId && (
+            <CheckoutBuilder 
+              produtoId={selectedProdutoId}
+              onSave={() => setCheckoutBuilderOpen(false)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={ferramentasOpen} onOpenChange={setFerramentasOpen}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Ferramentas do Produto</DialogTitle>
+          </DialogHeader>
+          {selectedProdutoId && (
+            <ProdutoFerramentas produtoId={selectedProdutoId} />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
