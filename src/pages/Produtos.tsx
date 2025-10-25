@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { 
   Package2, 
@@ -11,7 +12,8 @@ import {
   Trash,
   Settings,
   ShoppingCart,
-  Link as LinkIcon
+  Link as LinkIcon,
+  Eye
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,14 +28,6 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { AddEditProdutoDialog } from "@/components/produtos/AddEditProdutoDialog";
-import { 
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { CheckoutBuilder } from "@/components/produtos/CheckoutBuilder";
-import { ProdutoFerramentas } from "@/components/produtos/ProdutoFerramentas";
 
 // Tipos para os produtos
 export interface Produto {
@@ -113,13 +107,11 @@ const produtosMock: Produto[] = [
 
 const Produtos = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [produtos, setProdutos] = useState<Produto[]>(produtosMock);
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentProduto, setCurrentProduto] = useState<Produto | null>(null);
-  const [checkoutBuilderOpen, setCheckoutBuilderOpen] = useState(false);
-  const [ferramentasOpen, setFerramentasOpen] = useState(false);
-  const [selectedProdutoId, setSelectedProdutoId] = useState<string | null>(null);
 
   // Filtrar produtos pelo termo de busca
   const produtosFiltrados = produtos.filter(produto => 
@@ -174,28 +166,11 @@ const Produtos = () => {
     return preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
-  const handleOpenCheckoutBuilder = (produtoId: string) => {
-    setSelectedProdutoId(produtoId);
-    setCheckoutBuilderOpen(true);
-  };
-
-  const handleOpenFerramentas = (produtoId: string) => {
-    setSelectedProdutoId(produtoId);
-    setFerramentasOpen(true);
-  };
-
-  const handlePublicarMarketplace = (produtoId: string) => {
-    toast({
-      title: "Produto publicado!",
-      description: "Seu produto foi publicado no marketplace com sucesso.",
-    });
-  };
-
   return (
     <div className="animate-fade-in space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-3xl font-bold">Produtos</h1>
-        <Button onClick={handleAddProduto}>
+        <Button onClick={() => navigate("/produtos/novo")}>
           <Plus className="mr-2 h-4 w-4" />
           Adicionar Produto
         </Button>
@@ -234,7 +209,11 @@ const Produtos = () => {
               <TableBody>
                 {produtosFiltrados.length > 0 ? (
                   produtosFiltrados.map((produto) => (
-                    <TableRow key={produto.id}>
+                    <TableRow 
+                      key={produto.id}
+                      className="cursor-pointer hover:bg-accent/50"
+                      onClick={() => navigate(`/produtos/${produto.id}`)}
+                    >
                       <TableCell className="font-medium">
                         <div className="flex items-center gap-2">
                           <div className="w-10 h-10 rounded bg-muted/50 flex items-center justify-center">
@@ -251,7 +230,7 @@ const Produtos = () => {
                           <div>
                             <div>{produto.nome}</div>
                             <div className="text-xs text-muted-foreground mt-1">
-                              {produto.tags.map((tag, index) => (
+                              {produto.tags.slice(0, 2).map((tag, index) => (
                                 <span key={index} className="mr-1">
                                   #{tag}
                                 </span>
@@ -305,38 +284,30 @@ const Produtos = () => {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
+                        <div className="flex justify-end gap-2" onClick={(e) => e.stopPropagation()}>
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => handleOpenFerramentas(produto.id)}
-                            title="Ferramentas"
+                            onClick={() => navigate(`/produtos/${produto.id}`)}
+                            title="Ver Detalhes"
                           >
-                            <Settings className="h-4 w-4" />
+                            <Eye className="h-4 w-4" />
                           </Button>
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => handleOpenCheckoutBuilder(produto.id)}
-                            title="Checkout Builder"
-                          >
-                            <ShoppingCart className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handlePublicarMarketplace(produto.id)}
-                            title="Publicar no Marketplace"
-                          >
-                            <LinkIcon className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleEditProduto(produto)}
+                            onClick={() => navigate(`/produtos/${produto.id}/editar`)}
                             title="Editar"
                           >
                             <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => navigate(`/produtos/${produto.id}/checkout`)}
+                            title="Checkout Builder"
+                          >
+                            <ShoppingCart className="h-4 w-4" />
                           </Button>
                           <Button
                             variant="ghost"
@@ -358,7 +329,7 @@ const Produtos = () => {
                         <p className="text-muted-foreground">Nenhum produto encontrado</p>
                         <Button 
                           variant="link" 
-                          onClick={handleAddProduto} 
+                          onClick={() => navigate("/produtos/novo")} 
                           className="mt-2"
                         >
                           Adicionar um produto
@@ -379,31 +350,6 @@ const Produtos = () => {
         produto={currentProduto}
         onSave={handleSaveProduto}
       />
-
-      <Dialog open={checkoutBuilderOpen} onOpenChange={setCheckoutBuilderOpen}>
-        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Checkout Builder</DialogTitle>
-          </DialogHeader>
-          {selectedProdutoId && (
-            <CheckoutBuilder 
-              produtoId={selectedProdutoId}
-              onSave={() => setCheckoutBuilderOpen(false)}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={ferramentasOpen} onOpenChange={setFerramentasOpen}>
-        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Ferramentas do Produto</DialogTitle>
-          </DialogHeader>
-          {selectedProdutoId && (
-            <ProdutoFerramentas produtoId={selectedProdutoId} />
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
