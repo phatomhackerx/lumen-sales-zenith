@@ -12,8 +12,13 @@ import ProdutoDetalhe from "./pages/ProdutoDetalhe";
 import Marketplace from "./pages/Marketplace";
 import Vendas from "./pages/Vendas";
 import Afiliados from "./pages/Afiliados";
+import Assinaturas from "./pages/Assinaturas";
 import Relatorios from "./pages/Relatorios";
 import Configuracoes from "./pages/Configuracoes";
+import Financeiro from "./pages/Financeiro";
+import Integracoes from "./pages/Integracoes";
+import Cupons from "./pages/Cupons";
+import Quiz from "./pages/Quiz";
 import NotFound from "./pages/NotFound";
 import { AppLayout } from "./components/layout/AppLayout";
 
@@ -37,8 +42,13 @@ const App = () => (
           <Route path="/marketplace/:id" element={<AppLayout><ProdutoDetalhe /></AppLayout>} />
           <Route path="/vendas" element={<AppLayout><Vendas /></AppLayout>} />
           <Route path="/afiliados" element={<AppLayout><Afiliados /></AppLayout>} />
+          <Route path="/assinaturas" element={<AppLayout><Assinaturas /></AppLayout>} />
           <Route path="/relatorios" element={<AppLayout><Relatorios /></AppLayout>} />
           <Route path="/configuracoes" element={<AppLayout><Configuracoes /></AppLayout>} />
+          <Route path="/financeiro" element={<AppLayout><Financeiro /></AppLayout>} />
+          <Route path="/integracoes" element={<AppLayout><Integracoes /></AppLayout>} />
+          <Route path="/cupons" element={<AppLayout><Cupons /></AppLayout>} />
+          <Route path="/quiz" element={<AppLayout><Quiz /></AppLayout>} />
           <Route path="/404" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>
